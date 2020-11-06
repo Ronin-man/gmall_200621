@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="dw_publisher" />
+        <module name="gmall_canal" />
+        <module name="gmall_realtime" />
+        <module name="gmall_common" />
+        <module name="gmall_mocker" />
+        <module name="gmall_logger" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
