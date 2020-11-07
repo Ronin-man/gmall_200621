@@ -10,7 +10,7 @@ import com.atguigu.Constants.GmallConstants;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.ronin.utils.MyKafkaSender;
-import org.apache.kafka.clients.producer.KafkaProducer;
+
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -37,8 +37,10 @@ public class CanalClient {
             Message message = canalConnector.get(100);
             //判断message是否为空,如果为空就不解析,message里面有多行数据,是个集合,所以需要遍历
             if (message.getEntries().size()<=0){
+                System.out.println("当前没有数据！休息一会！");
                 try {
                     Thread.sleep(5000);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -94,13 +96,8 @@ public class CanalClient {
                 }
                 System.out.println(jsonObject.toString());
                 //发送数据到kafka中
-                MyKafkaSender.send(GmallConstants.KAFKA_TOPIC_ORDER_DETAIL,jsonObject.toString());
-
+                MyKafkaSender.send(GmallConstants.KAFKA_GMALL_ORDER_INFO,jsonObject.toString());
             }
-
         }
-
-
     }
-
 }

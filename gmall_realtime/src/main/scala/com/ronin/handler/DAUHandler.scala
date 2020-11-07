@@ -18,13 +18,14 @@ import redis.clients.jedis.Jedis
  * @create 2020-11-05 15:47
  */
 object DAUHandler {
+  val sdf1 = new SimpleDateFormat("yyyy-MM-dd HH")
   /**
    * 将每一行数据转换为样例类对象,并补充时间字段
    * @param kafkaDStream 从kafka中获取的原始数据
    * @return
    */
   def kafkaToStartLog(kafkaDStream: InputDStream[ConsumerRecord[String, String]]) = {
-    val sdf = new SimpleDateFormat("yyyy-MM-dd HH")
+
     kafkaDStream.map(record => {
       //a.获取value
       val value: String = record.value()
@@ -32,7 +33,7 @@ object DAUHandler {
       val startUpLog: StartUpLog = JSON.parseObject(value, classOf[StartUpLog])
       val ts: Long = startUpLog.ts
       //c.格式化时间戳,获取时间和分钟
-      val dateHourStr: String = sdf.format(new Date(ts))
+      val dateHourStr: String = sdf1.format(new Date(ts))
       val dateAndHourArr: Array[String] = dateHourStr.split(" ")
       //d. 给时间字段重新赋值
       startUpLog.logDate = dateAndHourArr(0)
@@ -113,6 +114,7 @@ object DAUHandler {
     //          })
     //      })
     //    value1
+
     //方案三 :通过广播变量,在driver端中,提前将redis中数据mid给获取出来,发给每个executor端,
     //每个批次只获取一次连接,
     //每个批次都执行一次,将数据写入redis中,transform 算子与rdd之间的代码在driver端执行,每次都执行一次
